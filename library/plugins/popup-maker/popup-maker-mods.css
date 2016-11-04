@@ -1,0 +1,15 @@
+.pum-title {
+	font-weight: 600;
+}
+
+.pum-content + .pum-close {
+	opacity: 0.4;
+	-webkit-transition: opacity 150ms ease;
+	-moz-transition: opacity 150ms ease;
+	-o-transition: opacity 150ms ease;
+	transition: opacity 150ms ease;
+}
+
+.pum-content + .pum-close:hover {
+	opacity: 1.0;
+}

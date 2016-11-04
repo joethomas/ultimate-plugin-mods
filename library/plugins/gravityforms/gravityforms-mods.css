@@ -1,0 +1,97 @@
+.gform_wrapper input,
+.gform_wrapper textarea,
+.gform_wrapper select,
+.gform_wrapper .seldiv,
+.gform_wrapper .select2-choice {
+	margin-top: 0;
+	display: inherit;
+}
+
+.style-dark input:not([type='submit']):not([type='button']):not([type='number']):not([type='checkbox']):not([type='radio']):focus,
+.style-dark textarea:focus, .style-dark.style-override input:not([type='submit']):not([type='button']):not([type='number']):not([type='checkbox']):not([type='radio']):focus,
+.style-dark.style-override textarea:focus, .style-light .style-dark input:not([type='submit']):not([type='button']):not([type='number']):not([type='checkbox']):not([type='radio']):focus,
+.style-light .style-dark textarea:focus {
+	border-color: rgba(255, 255, 255, 0.5)
+}
+
+.gform_wrapper .field_sublabel_above .ginput_complex.ginput_container label,
+.gform_wrapper .field_sublabel_above div[class*=gfield_time_].ginput_container label,
+.gform_wrapper .field_sublabel_below .ginput_complex.ginput_container label,
+.gform_wrapper .field_sublabel_below div[class*=gfield_time_].ginput_container label {
+	font-size: .625em;
+	text-transform: uppercase;
+}
+
+.gform_wrapper table.gfield_list th {
+	padding-bottom: 0;
+}
+
+.gform_wrapper table.gfield_list td {
+	padding-top: 0;
+}
+
+/* Make forms fill 100% width of container */
+
+.gform_wrapper,
+.gform_wrapper.gf_simple_horizontal_wrapper {
+	max-width: 100%;
+}
+
+.gform_wrapper form.gf_simple_horizontal div.gform_body {
+	width: 70%;
+}
+
+.gform_wrapper form.gf_simple_horizontal div.gform_body ul.top_label li.gfield:nth-child(1):nth-last-child(4),
+.gform_wrapper form.gf_simple_horizontal div.gform_body ul.top_label li.gfield:nth-child(2):nth-last-child(3),
+.gform_wrapper form.gf_simple_horizontal div.gform_body ul.top_label li.gfield:nth-child(3):nth-last-child(2),
+.gform_wrapper form.gf_simple_horizontal div.gform_body ul.top_label li.gfield:nth-child(4):nth-last-child(1) {
+	width: 100% !important;
+}
+
+.gform_wrapper form.gf_simple_horizontal div.gform_body,
+.gform_wrapper form.gf_simple_horizontal div.gform_footer.top_label {
+	vertical-align: top;
+}
+
+.gform_wrapper form.gf_simple_horizontal div.gform_footer.top_label {
+	top: 10px;
+}
+
+/* Horizontal Forms Helpers */
+@media (max-width: 959px) {
+	div.gf_simple_horizontal form input[type="submit"],
+	div.gf_simple_horizontal_wrapper form input[type="submit"] {
+		margin: 9px 0 0 0;
+	}
+}
+
+@media (max-width: 799px) {
+	div.gf_simple_horizontal div.gform_body,
+	div.gf_simple_horizontal_wrapper div.gform_body,
+	div.gf_simple_horizontal div.gform_footer,
+	div.gf_simple_horizontal_wrapper div.gform_footer {
+		display: block;
+		width: 100%;
+	}
+
+	div.gf_simple_horizontal div.gform_footer,
+	div.gf_simple_horizontal_wrapper div.gform_footer {
+		padding: 1em 0 .625em !important;
+	}
+}
+
+/* Total Price Styles */
+
+.gform_wrapper span.ginput_total {
+	padding: 2px 8px 1px;
+    background-color: #fff;
+	color: #33b552;
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+/* Select Field */
+.gform_wrapper.gf_browser_chrome select {
+	padding: 10px 15px;
+	line-height: 1.2;
+}

@@ -1,0 +1,4 @@
+<?php
+/**
+ * Slider Revolution Modifications
+ */

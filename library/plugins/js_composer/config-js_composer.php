@@ -1,0 +1,4 @@
+<?php
+/**
+ * Visual Composer Modifications
+ */
