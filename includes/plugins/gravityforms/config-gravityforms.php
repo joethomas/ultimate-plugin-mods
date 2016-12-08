@@ -9,12 +9,10 @@
 /**
  * Load custom CSS
  */
-function joeupmods_gravityforms_enqueue_styles() {
+function joe_upm_gravityforms_enqueue_styles() {
 
-	global $post;
-
-	$pluginbase = basename(__DIR__);
-	$handle     = JOEUPMODS_PREFIX . '-' . $pluginbase;
+	$pluginbase = basename( __DIR__ );
+	$handle     = JOE_UPM_PREFIX . '-' . $pluginbase;
 	$deps       = array();
 
 	// If Gravity Forms built-in styles are enabled
@@ -24,11 +22,11 @@ function joeupmods_gravityforms_enqueue_styles() {
 
 	}
 
-	wp_register_style( $handle, plugin_dir_url(__FILE__) . $pluginbase . '-mods.css', $deps, JOEUPMODS_VER );
+	wp_register_style( $handle, plugin_dir_url( __FILE__ ) . 'css/' . $pluginbase . '-mods.css', $deps, JOE_UPM_VER );
 	wp_enqueue_style( $handle );
 
 }
-add_action( 'wp_enqueue_scripts', 'joeupmods_gravityforms_enqueue_styles' );
+add_action( 'wp_enqueue_scripts', 'joe_upm_gravityforms_enqueue_styles' );
 
 
 /* Form Builder
@@ -48,97 +46,80 @@ add_filter( 'gform_enable_field_label_visibility_settings', '__return_true' );
 /**
  * Extend Gravity Forms Shortcode: Entries Left
  *
+ * Usage: [gravityforms action="entries_left" id="yourformid"]
+ *
  * @link http://gravitywiz.com/2012/09/19/shortcode-display-number-of-entries-left/
  */
 
-/**
- * Usage:
- *
- * [gravityforms action="entries_left" id="yourformid"]
- */
+function joe_upm_gravityforms_shortcode_entries_left( $output, $atts ) {
 
-function joeupmods_gravityforms_shortcode_entries_left( $output, $atts ) {
+	extract( shortcode_atts( array(
+		'id'     => false,
+		'format' => false // should be 'comma', 'decimal'
+	), $atts ) );
 
-    extract( shortcode_atts( array(
-        'id'     => false,
-        'format' => false // should be 'comma', 'decimal'
-    ), $atts ) );
+	if( ! $id )
+		return '';
 
-    if( ! $id )
-        return '';
+	$form = RGFormsModel::get_form_meta( $id );
+	if( ! rgar( $form, 'limitEntries' ) || ! rgar( $form, 'limitEntriesCount' ) )
+		return '';
 
-    $form = RGFormsModel::get_form_meta( $id );
-    if( ! rgar( $form, 'limitEntries' ) || ! rgar( $form, 'limitEntriesCount' ) )
-        return '';
+	$entry_count = RGFormsModel::get_lead_count( $form['id'], '', null, null, null, null, 'active' );
+	$entries_left = rgar( $form, 'limitEntriesCount' ) - $entry_count;
+	$output = $entries_left;
 
-    $entry_count = RGFormsModel::get_lead_count( $form['id'], '', null, null, null, null, 'active' );
-    $entries_left = rgar( $form, 'limitEntriesCount' ) - $entry_count;
-    $output = $entries_left;
+	if( $format ) {
 
-    if( $format ) {
-        $format = $format == 'decimal' ? '.' : ',';
-        $output = number_format( $entries_left, 0, false, $format );
-    }
+		$format = $format == 'decimal' ? '.' : ',';
+		$output = number_format( $entries_left, 0, false, $format );
 
-    return $entries_left > 0 ? $output : 0;
+	}
+
+	return $entries_left > 0 ? $output : 0;
+
 }
-add_filter( 'gform_shortcode_entries_left', 'joeupmods_gravityforms_shortcode_entries_left', 10, 2 );
+add_filter( 'gform_shortcode_entries_left', 'joe_upm_gravityforms_shortcode_entries_left', 10, 2 );
 
 /**
  * Extend Gravity Forms Shortcode: Entry Count
  *
+ * Usage: [gravityforms action="entry_count" id="yourformid"]
+ *
  * @link http://gravitywiz.com/shortcode-display-number-entries-submitted/
  */
 
-/**
- * Usage:
- *
- * [gravityforms action="entry_count" id="yourformid"]
- */
+function joe_upm_gravityforms_shortcode_entry_count( $output, $atts ) {
 
-function joeupmods_gravityforms_shortcode_entry_count( $output, $atts ) {
+	extract( shortcode_atts( array(
+		'id'     => false,
+		'status' => 'total', // accepts 'total', 'unread', 'starred', 'trash', 'spam'
+		'format' => false, // should be 'comma', 'decimal'
+		'offset' => '50' // how many to add to actual number
+	), $atts ) );
 
-    extract( shortcode_atts( array(
-        'id' => false,
-        'status' => 'total', // accepts 'total', 'unread', 'starred', 'trash', 'spam'
-        'format' => false, // should be 'comma', 'decimal'
-        'offset' => '50' // how many to add to actual number
-    ), $atts ) );
-
-    $valid_statuses = array( 'total', 'unread', 'starred', 'trash', 'spam' );
+	$valid_statuses = array( 'total', 'unread', 'starred', 'trash', 'spam' );
 
     if( ! $id || ! in_array( $status, $valid_statuses ) ) {
-        return current_user_can( 'update_core' ) ? __( 'Invalid "id" (the form ID) or "status" (i.e. "total", "trash", etc.) parameter passed.' ) : '';
-    }
 
-    $counts = GFFormsModel::get_form_counts( $id );
-    $output = rgar( $counts, $status ) + $offset;
+		return current_user_can( 'update_core' ) ? __( 'Invalid "id" (the form ID) or "status" (i.e. "total", "trash", etc.) parameter passed.' ) : '';
 
-    if( $format ) {
-        $format = $format == 'decimal' ? '.' : ',';
-        $output = number_format( $output, 0, false, $format );
-    }
+	}
 
-    return $output;
+	$counts = GFFormsModel::get_form_counts( $id );
+	$output = rgar( $counts, $status ) + $offset;
+
+	if( $format ) {
+
+		$format = $format == 'decimal' ? '.' : ',';
+		$output = number_format( $output, 0, false, $format );
+
+	}
+
+	return $output;
+
 }
-add_filter( 'gform_shortcode_entry_count', 'joeupmods_gravityforms_shortcode_entry_count', 10, 2 );
-
-
-/* Tabindex Fix
-==============================================================================*/
-
-/**
- * Fix Gravity Form Tabindex Conflicts
- *
- * @link http://gravitywiz.com/fix-gravity-form-tabindex-conflicts/
- */
-function joeupmods_gravityforms_fix_tabindex( $tab_index, $form = false ) {
-    $starting_index = 1000; // if you need a higher tabindex, update this number
-    if( $form )
-        add_filter( 'gform_tabindex_' . $form['id'], 'gform_tabindexer' );
-    return GFCommon::$tab_index >= $starting_index ? GFCommon::$tab_index : $starting_index;
-}
-//add_filter( 'gform_tabindex', 'joeupmods_gravityforms_fix_tabindex', 10, 2 );
+add_filter( 'gform_shortcode_entry_count', 'joe_upm_gravityforms_shortcode_entry_count', 10, 2 );
 
 
 /* Address Modifiers
@@ -150,26 +131,34 @@ function joeupmods_gravityforms_fix_tabindex( $tab_index, $form = false ) {
 /**
  * Evaluate input state
  */
-function joeupmods_gravityforms_evaluate_state( $form_meta ) {
+function joe_upm_gravityforms_evaluate_state( $form_meta ) {
 
 	foreach( $form_meta['fields'] as $field ) {
+
 		if( $field['type'] == 'address' ) {
+
 			foreach( $field['inputs'] as $input ) {
+
 				if( $input['label'] == 'State / Province' ) {
+
 					$state = $_POST['input_' . str_replace( '.', '_', $input['id'] )];
-					$_POST['input_' . str_replace( '.', '_', $input['id'] )] = joeupmods_gravityforms_abbreviate_state( $state );
+					$_POST['input_' . str_replace( '.', '_', $input['id'] )] = joe_upm_gravityforms_abbreviate_state( $state );
+
 				}
+
 			}
+
 		}
+
 	}
 
 }
-add_action( 'gform_pre_submission', 'joeupmods_gravityforms_evaluate_state' );
+add_action( 'gform_pre_submission', 'joe_upm_gravityforms_evaluate_state' );
 
 /**
  * Change input state name to state abbreviations
  */
-function joeupmods_gravityforms_abbreviate_state( $state ) {
+function joe_upm_gravityforms_abbreviate_state( $state ) {
 
 	if( strlen( $state ) == 2 ) {
 
@@ -179,7 +168,7 @@ function joeupmods_gravityforms_abbreviate_state( $state ) {
 
 		$state = ucwords( strtolower( $state ) );
 
-		switch( $state ){
+		switch( $state ) {
 
 			case 'Alaska':
 				$newstate = 'AK';

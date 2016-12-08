@@ -3,9 +3,9 @@
 	Plugin Name: Ultimate Plugin Mods
 	Description: This plugin contains useful modifications for various oft-used plugins, including Gravity Forms, Popup Maker, Slider Revolution, The Events Calendar, Visual Composer, and WooCommerce.
 	Plugin URI: https://github.com/joethomas/ultimate-plugin-mods
-	Version: 1.0.3
+	Version: 1.0.4
 	Author: Joe Thomas
-	Author URI: http://joethomas.co
+	Author URI: https://github.com/joethomas
 	License: GNU General Public License v3.0
 	License URI: http://www.gnu.org/licenses/gpl-3.0.html
 	Text Domain: ultimate-plugin-mods
@@ -16,7 +16,7 @@
 defined( 'ABSPATH' ) or exit;
 
 
-/* Setup Plugin
+/* Global Variables & Constants
 ==============================================================================*/
 
 /**
@@ -24,43 +24,23 @@ defined( 'ABSPATH' ) or exit;
  */
 
 // Plugin
-function joeupmods_get_plugin_data_version() {
+function joe_upm_get_plugin_data_version() {
 	$plugin = get_plugin_data( __FILE__, false, false );
 
-	define( 'JOEUPMODS_VER', $plugin['Version'] );
-	define( 'JOEUPMODS_PREFIX', $plugin['TextDomain'] );
-	define( 'JOEUPMODS_NAME', $plugin['Name'] );
+	define( 'JOE_UPM_VER', $plugin['Version'] );
+	define( 'JOE_UPM_TEXTDOMAIN', $plugin['TextDomain'] );
+	define( 'JOE_UPM_NAME', $plugin['Name'] );
 }
-add_action( 'init', 'joeupmods_get_plugin_data_version' );
+add_action( 'init', 'joe_upm_get_plugin_data_version' );
 
-// Plugin basename
-define( 'JOEUPMODS_BASENAME', plugin_basename(__DIR__) );
-define( 'JOEUPMODS_BASENAME_FILE', plugin_basename(__FILE__) );
-
-// Plugin paths
-define( 'JOEUPMODS_DIR', untrailingslashit( plugin_dir_path(__FILE__) ) );
-define( 'JOEUPMODS_DIR_URI', untrailingslashit( plugin_dir_url(__FILE__) ) );
-
-// Plugin directory paths
-define( 'JOEUPMODS_INC_DIR', JOEUPMODS_DIR . '/includes' );
-define( 'JOEUPMODS_INC_DIR_URI', JOEUPMODS_DIR_URI . '/includes' );
-
-define( 'JOEUPMODS_LIB_DIR', JOEUPMODS_DIR . '/library' );
-define( 'JOEUPMODS_LIB_DIR_URI', JOEUPMODS_DIR_URI . '/library' );
-
-// Third party plugins path
-define( 'JOEUPMODS_PLUGINS_DIR', JOEUPMODS_LIB_DIR . '/plugins' );
-define( 'JOEUPMODS_PLUGINS_DIR_URI', JOEUPMODS_LIB_DIR_URI . '/plugins' );
+define( 'JOE_UPM_PREFIX', 'joe_upm_' );
 
 
-/* Bootstrap Files
+/* Bootstrap
 ==============================================================================*/
 
-// Plugin updates
-require_once( JOEUPMODS_INC_DIR . '/updates.php' );
-
-// Third party plugin bootstrap
-require_once( JOEUPMODS_INC_DIR . '/plugins-bootstrap.php' );
+require_once( 'includes/updates.php' ); // controls plugin updates
+require_once( 'includes/plugins-bootstrap.php' ); // controls bootstrapping for plugin mods
 
 
 /* Languages
@@ -69,8 +49,7 @@ require_once( JOEUPMODS_INC_DIR . '/plugins-bootstrap.php' );
 /**
  * Load text domain for plugin translations
  */
-function joeupmods_load_textdomain() {
-	load_plugin_textdomain( 'ultimate-plugin-mods', FALSE, JOEUPMODS_BASENAME . '/languages/' );
+function joe_upm_load_textdomain() {
+	load_plugin_textdomain( 'ultimate-plugin-mods', false, basename( __DIR__ ) . '/languages/' );
 }
-add_action( 'plugins_loaded', 'joeupmods_load_textdomain' );
-
+add_action( 'plugins_loaded', 'joe_upm_load_textdomain' );
