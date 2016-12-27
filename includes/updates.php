@@ -4,7 +4,7 @@
  *
  * @since 1.0.0
  */
-function joe_upm_do_not_update_plugin_wp( $r, $url ) {
+function joe_upm_do_not_update_plugin_wp_83735274( $r, $url ) {
 
 	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) ) {
 
@@ -22,4 +22,4 @@ function joe_upm_do_not_update_plugin_wp( $r, $url ) {
 	return $r;
 
 }
-add_filter( 'http_request_args', 'joe_upm_do_not_update_plugin_wp', 5, 2 );
+add_filter( 'http_request_args', 'joe_upm_do_not_update_plugin_wp_83735274', 5, 2 );
