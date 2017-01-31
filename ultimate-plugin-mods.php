@@ -3,7 +3,7 @@
 	Plugin Name: Ultimate Plugin Mods
 	Description: This plugin contains useful modifications for various oft-used plugins, including Gravity Forms, Popup Maker, and WP Help.
 	Plugin URI: https://github.com/joethomas/ultimate-plugin-mods
-	Version: 1.1.0
+	Version: 1.2.0
 	Author: Joe Thomas
 	Author URI: https://github.com/joethomas
 	License: GNU General Public License v3.0
