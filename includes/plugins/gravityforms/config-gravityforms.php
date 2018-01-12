@@ -40,6 +40,20 @@ add_action( 'wp_enqueue_scripts', 'joe_upm_gravityforms_enqueue_styles' );
 add_filter( 'gform_enable_field_label_visibility_settings', '__return_true' );
 
 
+/* Form Behavior
+==============================================================================*/
+
+/**
+ * Disable confirmation anchor on all forms.
+ *
+ * Note: See link below to enable the anchor for all or individual forms.
+ *
+ * @link https://www.gravityhelp.com/documentation/article/gform_confirmation_anchor/
+ */
+
+add_filter( 'gform_confirmation_anchor', '__return_false' );
+
+
 /* Shortcodes
 ==============================================================================*/
 
