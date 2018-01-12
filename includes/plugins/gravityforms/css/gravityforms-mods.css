@@ -27,9 +27,14 @@
 	margin-bottom: 12px;
 }
 
-/* Make forms fill 100% width of container
+/* Change field description padding. */
+.gform_wrapper .top_label .gfield_description {
+    padding: .15em 0 0 1.4em;
+}
+
+/* Make forms fill 100% width of container.
      and
-   Horizontal Forms Helpers */
+   Horizontal form helpers. */
 
 .gform_wrapper,
 .gform_wrapper.gf_simple_horizontal_wrapper {
