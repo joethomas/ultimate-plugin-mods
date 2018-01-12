@@ -7,13 +7,6 @@
 	display: inherit;
 }
 
-.style-dark input:not([type='submit']):not([type='button']):not([type='number']):not([type='checkbox']):not([type='radio']):focus,
-.style-dark textarea:focus, .style-dark.style-override input:not([type='submit']):not([type='button']):not([type='number']):not([type='checkbox']):not([type='radio']):focus,
-.style-dark.style-override textarea:focus, .style-light .style-dark input:not([type='submit']):not([type='button']):not([type='number']):not([type='checkbox']):not([type='radio']):focus,
-.style-light .style-dark textarea:focus {
-	border-color: rgba(255, 255, 255, 0.5)
-}
-
 .gform_wrapper .field_sublabel_above .ginput_complex.ginput_container label,
 .gform_wrapper .field_sublabel_above div[class*=gfield_time_].ginput_container label,
 .gform_wrapper .field_sublabel_below .ginput_complex.ginput_container label,
@@ -30,7 +23,13 @@
 	padding-top: 0;
 }
 
-/* Make forms fill 100% width of container */
+.gform_wrapper .field_sublabel_below.hidden_label .ginput_container input[type="email"] {
+	margin-bottom: 12px;
+}
+
+/* Make forms fill 100% width of container
+     and
+   Horizontal Forms Helpers */
 
 .gform_wrapper,
 .gform_wrapper.gf_simple_horizontal_wrapper {
@@ -57,7 +56,15 @@
 	top: 10px;
 }
 
-/* Horizontal Forms Helpers */
+.gform_wrapper form.gf_simple_horizontal input[type="submit"],
+.gform_wrapper form.gf_simple_horizontal input[type="reset"],
+.gform_wrapper form.gf_simple_horizontal input[type="button"],
+.gform_wrapper form.gf_simple_horizontal button[type="submit"],
+.gform_wrapper form.gf_simple_horizontal input.button {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 @media (max-width: 959px) {
 	div.gf_simple_horizontal form input[type="submit"],
 	div.gf_simple_horizontal_wrapper form input[type="submit"] {
